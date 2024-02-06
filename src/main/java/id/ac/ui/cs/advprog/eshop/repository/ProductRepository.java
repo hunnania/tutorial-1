@@ -9,11 +9,9 @@ import java.util.List;
 
 @Repository
 public class ProductRepository {
-//    private static int createdProducts;
     private List<Product> productData = new ArrayList<>();
 
     public Product create(Product product) {
-//        product.setProductId(createdProducts++);
         productData.add(product);
         return product;
     }
@@ -34,6 +32,16 @@ public class ProductRepository {
     public void deleteById(String productId) {
         Product productTarget = findByProductId(productId);
         productData.remove(productTarget);
+    }
+
+    public void updateProduct(Product updatedProduct) {
+        for (Product product : productData) {
+            if (product.getProductId().equals(updatedProduct.getProductId())) {
+                product.setProductName(updatedProduct.getProductName());
+                product.setProductQuantity(updatedProduct.getProductQuantity());
+                break;
+            }
+        }
     }
 
 }
