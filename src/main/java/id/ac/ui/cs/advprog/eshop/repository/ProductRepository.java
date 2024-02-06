@@ -9,9 +9,11 @@ import java.util.List;
 
 @Repository
 public class ProductRepository {
+//    private static int createdProducts;
     private List<Product> productData = new ArrayList<>();
 
     public Product create(Product product) {
+//        product.setProductId(createdProducts++);
         productData.add(product);
         return product;
     }
@@ -19,4 +21,19 @@ public class ProductRepository {
     public Iterator<Product> findAll() {
         return productData.iterator();
     }
+
+    public Product findByProductId(String productId) {
+        for (Product product : productData) {
+            if (product.getProductId().equals(productId)) {
+                return product;
+            }
+        }
+        return null; // Return null if no product with the specified productId is found
+    }
+
+    public void deleteById(String productId) {
+        Product productTarget = findByProductId(productId);
+        productData.remove(productTarget);
+    }
+
 }
