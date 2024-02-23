@@ -4,18 +4,23 @@ import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class ProductControllerTest {
+
+    @InjectMocks
+    private ProductController productController;
 
     @Mock
     private ProductService productService;
@@ -23,60 +28,70 @@ class ProductControllerTest {
     @Mock
     private Model model;
 
-    @InjectMocks
-    private ProductController productController;
+    private Product product;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Pulpen Kokoro");
+        product.setProductQuantity(100);
     }
 
     @Test
-    void createProductPageTest() {
+    void testCreateProductPage() {
         String viewName = productController.createProductPage(model);
+
         assertEquals("CreateProduct", viewName);
+        verify(model).addAttribute(eq("product"), any(Product.class));
     }
 
     @Test
-    void createProductPostTest() {
-        Product product = new Product();
-        String viewName = productController.createProductPost(product, model);
-        assertEquals("redirect:list", viewName);
-        verify(productService, times(1)).create(product);
+    void testCreateProductPost() {
+        String redirectURL = productController.createProductPost(product, model);
+
+        assertEquals("redirect:list", redirectURL);
+        verify(productService).create(product);
     }
 
     @Test
-    void productListPageTest() {
+    void testProductListPage() {
         List<Product> productList = new ArrayList<>();
+        productList.add(product);
         when(productService.findAll()).thenReturn(productList);
+
         String viewName = productController.productListPage(model);
+
         assertEquals("ProductList", viewName);
-        verify(model, times(1)).addAttribute("products", productList);
+        verify(model).addAttribute("products", productList);
     }
 
     @Test
-    void deleteProductByIdTest() {
-        String productId = "123";
-        String viewName = productController.deleteProductById(productId);
-        assertEquals("redirect:list", viewName);
-        verify(productService, times(1)).deleteProductById(productId);
-    }
-
-    @Test
-    void editProductPageTest() {
-        String productId = "123";
-        Product product = new Product();
+    void testEditProductPage() {
+        String productId = "eb558e9f-1c39-460e-8860-71af6af63bd6";
         when(productService.getProductById(productId)).thenReturn(product);
+
         String viewName = productController.editProductPage(productId, model);
+
         assertEquals("EditProduct", viewName);
-        verify(model, times(1)).addAttribute("product", product);
+        verify(model).addAttribute("product", product);
     }
 
     @Test
-    void editProductTest() {
-        Product product = new Product();
-        String viewName = productController.editProduct(product);
-        assertEquals("redirect:list", viewName);
-        verify(productService, times(1)).updateProduct(product);
+    void testEditProductPut() {
+        String redirectURL = productController.editProduct(product);
+
+        assertEquals("redirect:list", redirectURL);
+        verify(productService).updateProduct(product);
+    }
+
+    @Test
+    void testDeleteProduct() {
+        String productId = "eb558e9f-1c39-460e-8860-71af6af63bd6";
+
+        String redirectURL = productController.deleteProductById(productId);
+
+        assertEquals("redirect:list", redirectURL);
+        verify(productService).deleteProductById(productId);
     }
 }
