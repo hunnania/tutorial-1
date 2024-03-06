@@ -1,18 +1,15 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PaymentTest {
     private Map<String, String> paymentData;
@@ -54,18 +51,6 @@ class PaymentTest {
     }
 
     @Test
-    void testCreatePaymentWithDefaultStatus() {
-        loadBankTransferPaymentData();
-        Payment payment = new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", order, paymentData);
-        assertSame(order, payment.getOrder());
-        assertEquals("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", payment.getId());
-        assertEquals("BANK", payment.getPaymentMethod);
-        assertEquals(paymentData, payment.getPaymentData);
-        assertEquals("PENDING", payment.getStatus());
-        paymentData.clear();
-    }
-
-    @Test
     void testCreatePaymentEmptyPaymentData() {
         loadBankTransferPaymentData();
         this.paymentData.clear();
@@ -76,19 +61,34 @@ class PaymentTest {
     }
 
     @Test
-    void testCreatePaymentWithRejectedStatus() {
+    void testCreatePaymentWithDefaultStatus() {
         loadBankTransferPaymentData();
-        Payment payment = new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", order, "REJECTED", paymentData);
-        assertEquals("REJECTED", payment.getStatus());
+        Payment payment = new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", order, paymentData);
+
+        assertSame(order, payment.getOrder());
+        assertEquals("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", payment.getId());
+        assertEquals("BANK", payment.getPaymentMethod());
+        assertEquals("PENDING", payment.getStatus());
+        assertEquals(paymentData, payment.getPaymentData());
         paymentData.clear();
+    }
+
+    @Test
+    void testCreatePaymentSuccessStatus() {
+        Payment payment = new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", "SUCCESS", order, paymentData);
+        assertEquals("SUCCESS", payment.getStatus());
+
+        order.setStatus("SUCCESS");
+        assertEquals("SUCCESS", order.getStatus());
     }
 
     @Test
     void testCreatePaymentWithInvalidStatus() {
         loadBankTransferPaymentData();
         assertThrows(IllegalArgumentException.class, () -> {
-            Payment payment = new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", order, "MEOW", paymentData);
+            new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", "MEOW", order, paymentData);
         });
+        paymentData.clear();
     }
 
     @Test
@@ -96,17 +96,17 @@ class PaymentTest {
         loadBankTransferPaymentData();
         Payment payment = new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", order, paymentData);
         payment.setStatus("REJECTED");
-        assertEquals("REJECTED", payment.getStatus());
+        assertEquals( "REJECTED", payment.getStatus());
         paymentData.clear();
     }
 
     @Test
-    void setPaymentStatusToInvalidStatus() {
+    void testSetPaymentStatusToInvalidStatus() {
         loadBankTransferPaymentData();
-        Payment payment = new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", order, "MEOW", paymentData);
+        Payment payment = new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", order, paymentData);
         assertThrows(IllegalArgumentException.class, () -> {
             payment.setStatus("MEOW");
         });
+        paymentData.clear();
     }
-
 }
