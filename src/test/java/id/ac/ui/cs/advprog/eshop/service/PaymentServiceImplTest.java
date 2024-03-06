@@ -124,7 +124,6 @@ class PaymentServiceImplTest {
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 
-
     @Test
     void testSetStatusInvalidStatus(){
         Payment payment = payments.get(0);

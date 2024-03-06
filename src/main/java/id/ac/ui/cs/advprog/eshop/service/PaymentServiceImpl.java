@@ -20,21 +20,46 @@ public class PaymentServiceImpl implements PaymentService{
     private OrderRepository orderRepository;
     @Override
     public Payment addPayment(Order order, String method, Map<String, String> paymentData){
+        if(paymentRepository.findById(order.getId()) == null){
+            Payment payment = new Payment(order.getId(), method, order, paymentData);
+            paymentRepository.save(payment);
+            return payment;
+        }
         return null;
     }
 
     @Override
     public Payment setStatus(Payment payment, String status){
-        return null;
+        if(!status.equals("SUCCESS") && !status.equals("REJECTED")){
+            throw new IllegalArgumentException("Invalid payment status");
+        }
+        Payment paymentX = paymentRepository.findById(payment.getId());
+        if (paymentX != null) {
+            Payment newPayment = new Payment(payment.getId(), payment.getPaymentMethod(), payment.getOrder(), payment.getPaymentData());
+            newPayment.setStatus(status);
+            if(newPayment.getStatus().equals("SUCCESS")){
+                orderRepository.findById(payment.getId()).setStatus("SUCCESS");
+            }
+            else if(newPayment.getStatus().equals("REJECTED")){
+                orderRepository.findById(payment.getId()).setStatus("FAILED");
+            }
+            else{
+                throw new IllegalArgumentException("Invalid payment status");
+            }
+            paymentRepository.save(newPayment);
+            return newPayment;
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
     @Override
     public Payment getPayment(String paymentId){
-        return null;
+        return paymentRepository.findById(paymentId);
     }
 
     @Override
     public List<Payment> getAllPayments(){
-        return null;
+        return paymentRepository.findAll();
     }
 }
