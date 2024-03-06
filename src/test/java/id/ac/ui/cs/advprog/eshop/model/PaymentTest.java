@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -68,7 +68,7 @@ class PaymentTest {
         assertSame(order, payment.getOrder());
         assertEquals("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", payment.getId());
         assertEquals("BANK", payment.getPaymentMethod());
-        assertEquals("PENDING", payment.getStatus());
+        assertEquals(PaymentStatus.PENDING.getValue(), payment.getStatus());
         assertEquals(paymentData, payment.getPaymentData());
         paymentData.clear();
     }
@@ -76,8 +76,8 @@ class PaymentTest {
     @Test
     void testCreatePaymentSuccessStatus() {
         loadBankTransferPaymentData();
-        Payment payment = new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", "SUCCESS", order, paymentData);
-        assertEquals("SUCCESS", payment.getStatus());
+        Payment payment = new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", PaymentStatus.SUCCESS.getValue(), order, paymentData);
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
     }
 
     @Test
@@ -93,8 +93,8 @@ class PaymentTest {
     void testSetPaymentStatusToRejected() {
         loadBankTransferPaymentData();
         Payment payment = new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", order, paymentData);
-        payment.setStatus("REJECTED");
-        assertEquals( "REJECTED", payment.getStatus());
+        payment.setStatus(PaymentStatus.REJECTED.getValue());
+        assertEquals( PaymentStatus.REJECTED.getValue(), payment.getStatus());
         paymentData.clear();
     }
 
