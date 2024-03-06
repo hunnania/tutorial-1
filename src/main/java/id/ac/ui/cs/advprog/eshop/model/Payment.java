@@ -1,5 +1,5 @@
 package id.ac.ui.cs.advprog.eshop.model;
-import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +20,7 @@ public class Payment {
     public Payment(String id, String method, Order order, Map<String, String> paymentData) {
         this.id = id;
         this.paymentMethod = method;
-        this.status = "PENDING";
+        this.status = PaymentStatus.PENDING.getValue();
         this.order = order;
 
         if (paymentData.isEmpty()) {
@@ -32,21 +32,14 @@ public class Payment {
 
     public Payment(String id, String method, String status, Order order, Map<String, String> paymentData) {
         this(id, method, order, paymentData);
-
-        String[] statusList = {"PENDING", "SUCCESS", "REJECTED"};
-        if (Arrays.stream(statusList).noneMatch(item -> (item.equals(status)))) {
-            throw new IllegalArgumentException();
-        } else {
-            this.status = status;
-        }
+        this.setStatus(status);
     }
 
     public void setStatus(String status) {
-        String[] statusList = {"PENDING", "ACCEPTED", "REJECTED"};
-        if (Arrays.stream(statusList).noneMatch(item -> (item.equals(status)))) {
-            throw new IllegalArgumentException();
-        } else {
+        if (PaymentStatus.contains(status)) {
             this.status = status;
+        } else {
+            throw new IllegalArgumentException();
         }
     }
 }
