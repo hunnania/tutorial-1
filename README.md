@@ -25,17 +25,17 @@ I think I can fix it by stating a class for the delete and edit button.
 
 # Module 2
 1. I have added more unit tests for the product service, product controller, and homepage controller. The
-strategies I used are to look at the code coverage report from jacoco. Then, I looked at which part is still
-low for the code coverage percentage. After that, I clicked at the Java files one by one from the report and
-make the unit tests for the methods that haven't been tested yet. After making the unit tests, I took a look at
-the newest report and try to improve my code coverage if I still can.
+   strategies I used are to look at the code coverage report from jacoco. Then, I looked at which part is still
+   low for the code coverage percentage. After that, I clicked at the Java files one by one from the report and
+   make the unit tests for the methods that haven't been tested yet. After making the unit tests, I took a look at
+   the newest report and try to improve my code coverage if I still can.
 2. Yes. To implement CI, I have used a few tools such as JUnit, Scorecard, and SonarCloud. These tools will help
-me monitor, integrate, and validate code changes automatically. This ensures that changes are regularly and 
-smoothly integrated into the main codebase, reducing integration issues. To implement CD, I have deployed my app to 
-Koyeb with Dockerfile which is fast and efficient. This ensures that validated code changes are deployed to production 
-or staging environments automatically, reducing manual intervention and deployment errors. Both workflows are automated, 
-triggered by code changes in the repository, specifically, `master` branch. This automation speeds up the development 
-cycle, improves code quality, and ensures that the latest changes are always available in the deployment environment.
+   me monitor, integrate, and validate code changes automatically. This ensures that changes are regularly and
+   smoothly integrated into the main codebase, reducing integration issues. To implement CD, I have deployed my app to
+   Koyeb with Dockerfile which is fast and efficient. This ensures that validated code changes are deployed to production
+   or staging environments automatically, reducing manual intervention and deployment errors. Both workflows are automated,
+   triggered by code changes in the repository, specifically, `master` branch. This automation speeds up the development
+   cycle, improves code quality, and ensures that the latest changes are always available in the deployment environment.
 </details>
 <details>
    <summary>Module #3</summary>
@@ -43,23 +43,30 @@ cycle, improves code quality, and ensures that the latest changes are always ava
 # Module 3
 1. I have applied three SOLID principles:<br>
    - Single Responsibility Principle (SRP): I used to create Product ID through the Product Class. After applying RSP,
-   I create the Product ID through Product Repository class.
-   - Liskov Substitution Principle (LSP): In the Product Controller file, I used to have two different classes, 
-   ProductController and CarController. Now, I have seperated them into two different files.
+     I create the Product ID through Product Repository class.
+   - Liskov Substitution Principle (LSP): In the Product Controller file, I used to have two different classes,
+     ProductController and CarController. Now, I have seperated them into two different files.
    - Dependency Inversion Principle (DIP): I made two interfaces for Product and Car Service. <br><br>
 2. Applying SOLID principles will make your project/codes more maintainable, adaptable, and testable, and making it a
-   higher-quality software. Firstly, Each class has a single responsibility (SRP), making it easier to understand and 
-   modify. This also reduces bugs when making changes. Secondly, SOLID principles improve code reusability and 
-   extensibility (OCP). Thirdly, LSP will make your code more flexible, different implementations can be used alternately. 
+   higher-quality software. Firstly, Each class has a single responsibility (SRP), making it easier to understand and
+   modify. This also reduces bugs when making changes. Secondly, SOLID principles improve code reusability and
+   extensibility (OCP). Thirdly, LSP will make your code more flexible, different implementations can be used alternately.
    Fourthly, ISP and DIP reducing unnecessary dependencies and making components easier to test in isolation.<br><br>
-   Example: 
+   Example:
    - Assigning `productId` through `create()` method in ProductRepository class instead of through Product class.
-   - Seperating `CarController` class into a new file instead of adding it in `ProductController` file will help 
+   - Seperating `CarController` class into a new file instead of adding it in `ProductController` file will help
    - Creating `ProductRepositoryInterface` and `CarRepositoryInterface`.<br><br>
-3. Not applying SOLID principles, your code tends to become more complex and harder to maintain over time because 
-classes may have multiple responsibilities (violating SRP). Then, without OCP, making changes or adding new features 
-often requires modifying existing code, increasing the risk bugs. Not following the LSP can make it tricky to swap one 
-part of the code for another without unexpected problems. If interfaces are too big or have things not everyone needs 
-(violating ISP), it can make the code more complicated. Lastly, if the code is too dependent on specific details 
-(violating DIP), it can be tough to make changes or use different parts together.
+3. Not applying SOLID principles, your code tends to become more complex and harder to maintain over time because
+   classes may have multiple responsibilities (violating SRP). Then, without OCP, making changes or adding new features
+   often requires modifying existing code, increasing the risk bugs. Not following the LSP can make it tricky to swap one
+   part of the code for another without unexpected problems. If interfaces are too big or have things not everyone needs
+   (violating ISP), it can make the code more complicated. Lastly, if the code is too dependent on specific details
+   (violating DIP), it can be tough to make changes or use different parts together.
+</details>
+<details>
+   <summary>Module #4</summary>
+
+# Module 4
+1. I think, the TDD flow is useful for me because with TDD I can focus on implementing one functionality at a time.
+2. I think my tests have successfully followed the F.I.R.S.T principle.
 </details>
