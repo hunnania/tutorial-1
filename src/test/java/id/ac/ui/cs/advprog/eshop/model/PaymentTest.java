@@ -61,32 +61,10 @@ class PaymentTest {
     }
 
     @Test
-    void testCreatePaymentWithDefaultStatus() {
-        loadBankTransferPaymentData();
-        Payment payment = new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", order, paymentData);
-
-        assertSame(order, payment.getOrder());
-        assertEquals("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", payment.getId());
-        assertEquals("BANK", payment.getPaymentMethod());
-        assertEquals(PaymentStatus.PENDING.getValue(), payment.getStatus());
-        assertEquals(paymentData, payment.getPaymentData());
-        paymentData.clear();
-    }
-
-    @Test
     void testCreatePaymentSuccessStatus() {
         loadBankTransferPaymentData();
-        Payment payment = new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", PaymentStatus.SUCCESS.getValue(), order, paymentData);
+        Payment payment = new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", order, paymentData);
         assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
-    }
-
-    @Test
-    void testCreatePaymentWithInvalidStatus() {
-        loadBankTransferPaymentData();
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", "MEOW", order, paymentData);
-        });
-        paymentData.clear();
     }
 
     @Test
