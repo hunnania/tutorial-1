@@ -1,11 +1,11 @@
 package id.ac.ui.cs.advprog.eshop.model;
-import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
-import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,25 +14,48 @@ import lombok.Setter;
 public class Payment {
     String id;
     String paymentMethod;
-    String status;
     Order order;
     Map<String, String> paymentData;
+    String status;
 
-    public Payment(String id, String method, Order order, Map<String, String> paymentData) {
+    public Payment(String id, String paymentMethod, Order order, Map<String, String> paymentData) {
         this.id = id;
-        this.setPaymentMethod(method);
-        this.setStatus(status);
+        this.setPaymentMethod(paymentMethod);
 
-        if (paymentData.isEmpty()) {
-            throw new IllegalArgumentException();
+
+        if (paymentData == null || paymentData.isEmpty()){
+            throw new IllegalArgumentException("PaymentData is Empty or null");
         } else {
             this.paymentData = paymentData;
         }
+
+        this.setStatus(status);
 
         if (order == null) {
             throw new IllegalArgumentException("Order must have at least one product");
         } else {
             this.order = order;
+        }
+    }
+
+    public void setStatus(String status) {
+        if (this.paymentMethod.equals("BANK_TRANSFER")){
+            if (isValidBankTransfer()){
+                this.status = PaymentStatus.SUCCESS.getValue();
+            } else {
+                this.status = PaymentStatus.REJECTED.getValue();
+            }
+        } else {
+            if (paymentData.containsKey("voucherCode")){
+                if (isValidVoucherCode(paymentData.get("voucherCode"))){
+                    this.status = PaymentStatus.SUCCESS.getValue();
+                } else {
+                    this.status = PaymentStatus.REJECTED.getValue();
+                }
+            } else {
+                this.status = PaymentStatus.REJECTED.getValue();
+            }
+
         }
     }
 
@@ -63,26 +86,7 @@ public class Payment {
         return true;
     }
 
-    public void setStatus(String status) {
-        if (this.paymentMethod.equals("BANK_TRANSFER")){
-            if (isValidBankTransfer()){
-                this.status = PaymentStatus.SUCCESS.getValue();
-            } else {
-                this.status = PaymentStatus.REJECTED.getValue();
-            }
-        } else {
-            if (paymentData.containsKey("voucherCode")){
-                if (isValidVoucherCode(paymentData.get("voucherCode"))){
-                    this.status = PaymentStatus.SUCCESS.getValue();
-                } else {
-                    this.status = PaymentStatus.REJECTED.getValue();
-                }
-            } else {
-                this.status = PaymentStatus.REJECTED.getValue();
-            }
 
-        }
-    }
 
     public void setPaymentMethod(String method) {
         if (PaymentMethod.contains(method)) {
@@ -91,4 +95,5 @@ public class Payment {
             throw new IllegalArgumentException("Invalid Payment Method");
         }
     }
+
 }
