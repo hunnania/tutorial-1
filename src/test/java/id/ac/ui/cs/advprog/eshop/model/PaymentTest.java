@@ -75,11 +75,9 @@ class PaymentTest {
 
     @Test
     void testCreatePaymentSuccessStatus() {
+        loadBankTransferPaymentData();
         Payment payment = new Payment("a3e3e3e3-9a7f-4603-92c2-eaf529271cc9", "BANK", "SUCCESS", order, paymentData);
         assertEquals("SUCCESS", payment.getStatus());
-
-        order.setStatus("SUCCESS");
-        assertEquals("SUCCESS", order.getStatus());
     }
 
     @Test
