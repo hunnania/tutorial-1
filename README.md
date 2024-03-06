@@ -63,3 +63,10 @@ part of the code for another without unexpected problems. If interfaces are too 
 (violating ISP), it can make the code more complicated. Lastly, if the code is too dependent on specific details 
 (violating DIP), it can be tough to make changes or use different parts together.
 </details>
+<details>
+   <summary>Module #4</summary>
+
+# Module 4
+1. I think, the TDD flow is useful for me because with TDD I can focus on implementing one functionality at a time.
+2. I think my tests have successfully followed the F.I.R.S.T principle.
+</details>
